@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-function TransactionForm({ onAddData }) {
+function TransactionForm({ onAddData, list, currentIndex }) {
     const [data, setData] = useState({ accountNo: "", iFSC: "", bName: "", amount: "" })
     const onHandleChange = e => {
         setData({
@@ -11,8 +11,23 @@ function TransactionForm({ onAddData }) {
     const onHandleSubmit = e => {
         e.preventDefault();
         onAddData(data);
+        setData({ accountNo: "", iFSC: "", bName: "", amount: "" })
 
     }
+    const currentEditObj = () => {
+        if (currentIndex === -1) {
+            return { accountNo: "", iFSC: "", bName: "", amount: "" }
+        }
+        else {
+            return list[currentIndex];
+        }
+    }
+
+    useEffect(() => {
+        setData(currentEditObj())
+
+    }, [currentIndex])
+
     return (
         <form onSubmit={onHandleSubmit} autoComplete="off">
             <label>Account No. </label><br />
