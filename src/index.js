@@ -3,10 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import { transactionReducer } from './reducers/transactionReducer'
 
+if (localStorage.getItem('transactions') === null) {
+  localStorage.setItem('transactions', JSON.stringify([]))
+}
+
+
+let initialState = {
+  currentIndex: -1,
+  list: JSON.parse(localStorage.getItem("transactions"))
+}
+
+const store = createStore(transactionReducer, initialState)
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

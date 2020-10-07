@@ -1,49 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import TransationForm from './TransactionForm'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions/transactionAction'
 
-
-function TransactionList() {
-    const [list, setList] = useState([])
-    const [currentIndex, setCurrentIndex] = useState(-1);
-
-    useEffect(() => {
-        setList(returnList);
-    }, [])
-
-    const returnList = () => {
-        if (localStorage.getItem('transactions') === null) {
-            return JSON.parse(localStorage.setItem('transactions', JSON.stringify([])))
-        }
-        return JSON.parse(localStorage.getItem('transactions'))
-    }
-
-    const onAddData = (data) => {
-
-        const tempList = returnList();
-        if (currentIndex === -1) {
-            tempList.push(data);
-        }
-        else {
-            tempList[currentIndex] = data;
-        }
-        localStorage.setItem('transactions', JSON.stringify(tempList));
-        setList(tempList);
-        setCurrentIndex(-1);
-    }
+function TransactionList({ list, deleteTransaction, editTransaction }) {
 
     const onhandleEdit = (index) => {
-        setCurrentIndex(index);
+        editTransaction(index);
     }
     const onhandleDelete = (index) => {
-        const tempList = returnList();
-        tempList.splice(index, 1);
-        localStorage.setItem('transactions', JSON.stringify(tempList));
-        setList(tempList);
+        deleteTransaction(index)
     }
-
     return (
         <div>
-            <TransationForm onAddData={onAddData} list={list} currentIndex={currentIndex} />
+            <TransationForm />
             <hr />
             <table>
                 <tbody>
@@ -61,7 +32,7 @@ function TransactionList() {
                             <td>{item.bName}</td>
                             <td>{item.amount}</td>
                             <td><i className="fas fa-edit" onClick={() => onhandleEdit(index)}></i>
-                                <i class="fas fa-trash-alt" onClick={() => onhandleDelete(index)}></i></td>
+                                <i className="fas fa-trash-alt" onClick={() => onhandleDelete(index)}></i></td>
 
                         </tr>
                     })}
@@ -70,5 +41,15 @@ function TransactionList() {
         </div >
     )
 }
-
-export default TransactionList
+const mapStateToProps = state => {
+    return {
+        list: state.list,
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({
+        deleteTransaction: actions.Delete,
+        editTransaction: actions.UpdateIndex
+    }, dispatch)
+}
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionList)
