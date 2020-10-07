@@ -16,7 +16,7 @@ export const Delete = index => {
         payload: index
     }
 }
-export const UpdateIndex = index => {
+export const Edit = index => {
     return {
         type: 'UPDATE_INDEX',
         payload: index

@@ -62,7 +62,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         insertTransaction: actions.Insert,
-        updateTransaction: actions.Update
+        updateTransaction: actions.Edit
     }, dispatch)
 }
 
