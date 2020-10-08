@@ -49,7 +49,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         deleteTransaction: actions.Delete,
-        editTransaction: actions.UpdateIndex
+        editTransaction: actions.Edit
     }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionList)
